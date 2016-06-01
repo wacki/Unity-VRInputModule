@@ -49,15 +49,17 @@ namespace Wacki {
 
             return false;
         }
-
-        protected override void OnEnterControl(GameObject control)
+        
+        public override void OnEnterControl(GameObject control)
         {
-            // todo...
+            var device = SteamVR_Controller.Input(_index);
+            device.TriggerHapticPulse(1000);
         }
 
-        protected override void OnExitControl(GameObject control)
+        public override void OnExitControl(GameObject control)
         {
-            // todo...
+            var device = SteamVR_Controller.Input(_index);
+            device.TriggerHapticPulse(600);
         }
     }
 

@@ -61,8 +61,8 @@ namespace Wacki {
         }
 
         protected virtual void Initialize() { }
-        protected virtual void OnEnterControl(GameObject control) { }
-        protected virtual void OnExitControl(GameObject control) { }
+        public virtual void OnEnterControl(GameObject control) { }
+        public virtual void OnExitControl(GameObject control) { }
         abstract public bool ButtonDown();
         abstract public bool ButtonUp();
 

@@ -119,7 +119,17 @@ namespace Wacki {
                 //if(pointerEvent.pointerCurrentRaycast.gameObject == null)
                 //return;
 
-                data.currentPoint = data.pointerEvent.pointerCurrentRaycast.gameObject;
+                // Send control enter and exit events to our controller
+                var hitControl = data.pointerEvent.pointerCurrentRaycast.gameObject;
+                if(data.currentPoint != hitControl) {
+                    if(data.currentPoint != null)
+                        controller.OnExitControl(data.currentPoint);
+
+                    if(hitControl != null)
+                        controller.OnEnterControl(hitControl);
+                }
+
+                data.currentPoint = hitControl;
 
                 // Handle enter and exit events on the GUI controlls that are hit
                 base.HandlePointerExitAndEnter(data.pointerEvent, data.currentPoint);
