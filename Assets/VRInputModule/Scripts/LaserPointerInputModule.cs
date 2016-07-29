@@ -102,8 +102,8 @@ namespace Wacki {
                     data.pointerEvent.Reset();
 
                 data.pointerEvent.delta = Vector2.zero;
-                data.pointerEvent.position = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-                data.pointerEvent.scrollDelta = Vector2.zero;
+                data.pointerEvent.position = new Vector2(UICamera.pixelWidth * 0.5f, UICamera.pixelHeight * 0.5f);
+                //data.pointerEvent.scrollDelta = Vector2.zero;
 
                 // trigger a raycast
                 eventSystem.RaycastAll(data.pointerEvent, m_RaycastResultCache);
@@ -114,7 +114,7 @@ namespace Wacki {
                 // we add 0.01 because that is the near plane distance of our camera and we want the correct distance
                 if(data.pointerEvent.pointerCurrentRaycast.distance > 0.0f)
                     controller.LimitLaserDistance(data.pointerEvent.pointerCurrentRaycast.distance + 0.01f);
-
+                
                 // stop if no UI element was hit
                 //if(pointerEvent.pointerCurrentRaycast.gameObject == null)
                 //return;
