@@ -89,6 +89,7 @@ namespace Wacki {
 
         public override void Process()
         {
+
             foreach(var pair in _controllerData) {
                 IUILaserPointer controller = pair.Key;
                 ControllerData data = pair.Value;
@@ -192,9 +193,18 @@ namespace Wacki {
                 }
 
 
+                
+
                 // drag handling
                 if(data.currentDragging != null) {
                     ExecuteEvents.Execute(data.currentDragging, data.pointerEvent, ExecuteEvents.dragHandler);
+                }
+
+
+
+                // update selected element for keyboard focus
+                if(base.eventSystem.currentSelectedGameObject != null) {
+                    ExecuteEvents.Execute(eventSystem.currentSelectedGameObject, GetBaseEventData(), ExecuteEvents.updateSelectedHandler);
                 }
             }
         }

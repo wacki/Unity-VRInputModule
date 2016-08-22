@@ -66,7 +66,7 @@ namespace Wacki {
         abstract public bool ButtonDown();
         abstract public bool ButtonUp();
 
-        void Update()
+        protected virtual void Update()
         {
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hitInfo;
