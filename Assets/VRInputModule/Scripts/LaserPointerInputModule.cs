@@ -40,8 +40,10 @@ namespace Wacki {
             
             // Create a new camera that will be used for raycasts
             UICamera = new GameObject("UI Camera").AddComponent<Camera>();
+            // Added PhysicsRaycaster so that pointer events are sent to 3d objects
+            UICamera.gameObject.AddComponent<PhysicsRaycaster>();
             UICamera.clearFlags = CameraClearFlags.Nothing;
-            UICamera.cullingMask = 0;
+            UICamera.enabled = false;
             UICamera.fieldOfView = 5;
             UICamera.nearClipPlane = 0.01f;
 
