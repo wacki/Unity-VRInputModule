@@ -18,8 +18,6 @@ public class GravityGun : MonoBehaviour, IPointerDownHandler, IPointerUpHandler 
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("OnPointerDown");
-            
         if (eventData is LaserPointerEventData) {
             var e = eventData as LaserPointerEventData;
             current = e.current.GetComponent<Rigidbody>();
@@ -30,17 +28,9 @@ public class GravityGun : MonoBehaviour, IPointerDownHandler, IPointerUpHandler 
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log("OnPointerUp");
-        current = null;
+       current = null;
     }
-
-
-    // Use this for initialization
-    void Start () {
-		
-	}
 	
-	// Update is called once per frame
 	void FixedUpdate () {
         if (current) {
             var dest = transform.TransformPoint(offset);

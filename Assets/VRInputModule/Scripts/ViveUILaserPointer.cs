@@ -9,17 +9,15 @@ namespace Wacki {
 
         private SteamVR_TrackedObject _trackedObject;
         private bool _connected = false;
-        private int _index;
 
         protected override void Initialize()
         {
             base.Initialize();
             Debug.Log("Initialize");
 
-            var trackedObject = GetComponent<SteamVR_TrackedObject>();
+            _trackedObject = GetComponent<SteamVR_TrackedObject>();
 
-            if(trackedObject != null) {
-                _index = (int)trackedObject.index;
+            if(_trackedObject != null) {
                 _connected = true;
             }
         }
@@ -28,8 +26,8 @@ namespace Wacki {
         {
             if(!_connected)
                 return false;
-
-            var device = SteamVR_Controller.Input(_index);
+            
+            var device = SteamVR_Controller.Input(controllerIndex);
             if(device != null) {
                 var result = device.GetPressDown(button);
                 return result;
@@ -43,7 +41,7 @@ namespace Wacki {
             if(!_connected)
                 return false;
 
-            var device = SteamVR_Controller.Input(_index);
+            var device = SteamVR_Controller.Input(controllerIndex);
             if(device != null)
                 return device.GetPressUp(button);
 
@@ -52,14 +50,26 @@ namespace Wacki {
         
         public override void OnEnterControl(GameObject control)
         {
-            var device = SteamVR_Controller.Input(_index);
+            if (!_connected)
+                return;
+            var device = SteamVR_Controller.Input(controllerIndex);
             device.TriggerHapticPulse(1000);
         }
 
         public override void OnExitControl(GameObject control)
         {
-            var device = SteamVR_Controller.Input(_index);
+            if (!_connected)
+                return;
+            var device = SteamVR_Controller.Input(controllerIndex);
             device.TriggerHapticPulse(600);
+        }
+
+        int controllerIndex
+        {
+            get {
+                if (!_connected) return 0;
+                return (int)(_trackedObject.index);
+            }
         }
     }
 
