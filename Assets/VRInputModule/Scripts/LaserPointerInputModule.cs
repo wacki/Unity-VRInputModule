@@ -8,7 +8,9 @@ namespace Wacki {
 
         public static LaserPointerInputModule instance { get { return _instance; } }
         private static LaserPointerInputModule _instance = null;
-                
+
+        public LayerMask layerMask;
+
         // storage class for controller specific data
         private class ControllerData {
             public LaserPointerEventData pointerEvent;
@@ -20,6 +22,7 @@ namespace Wacki {
 
 
         private Camera UICamera;
+        private PhysicsRaycaster raycaster;
         private HashSet<IUILaserPointer> _controllers;
         // controller data
         private Dictionary<IUILaserPointer, ControllerData> _controllerData = new Dictionary<IUILaserPointer, ControllerData>();
@@ -43,7 +46,7 @@ namespace Wacki {
             // Create a new camera that will be used for raycasts
             UICamera = new GameObject("UI Camera").AddComponent<Camera>();
             // Added PhysicsRaycaster so that pointer events are sent to 3d objects
-            UICamera.gameObject.AddComponent<PhysicsRaycaster>();
+            raycaster = UICamera.gameObject.AddComponent<PhysicsRaycaster>();
             UICamera.clearFlags = CameraClearFlags.Nothing;
             UICamera.enabled = false;
             UICamera.fieldOfView = 5;
@@ -93,6 +96,7 @@ namespace Wacki {
 
         public override void Process()
         {
+            raycaster.eventMask = layerMask;
 
             foreach(var pair in _controllerData) {
                 IUILaserPointer controller = pair.Key;
