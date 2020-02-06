@@ -51,6 +51,8 @@ namespace Wacki {
             UICamera.enabled = false;
             UICamera.fieldOfView = 5;
             UICamera.nearClipPlane = 0.01f;
+	        UICamera.cullingMask = LayerMask.NameToLayer("UI");//user must add canvases to a 'UI' layer
+	        UICamera.stereoTargetEye = StereoTargetEyeMask.None;
 
             // Find canvases in the scene and assign our custom
             // UICamera to them
