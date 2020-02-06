@@ -4,20 +4,19 @@ using Valve.VR;
 namespace Wacki {
 
     public class ViveUILaserPointer : IUILaserPointer {
-
-        public EVRButtonId button = EVRButtonId.k_EButton_SteamVR_Trigger;
-
-        private SteamVR_TrackedObject _trackedObject;
-        private bool _connected = false;
+        
+        public SteamVR_Action_Boolean ButtonPressState = SteamVR_Input.GetBooleanAction("InteractUI");
+        public SteamVR_Action_Vibration HapticAction;
+        public SteamVR_Input_Sources Hand = SteamVR_Input_Sources.RightHand;
+        private bool _connected = false; 
+        public bool Haptics = true;
 
         protected override void Initialize()
         {
             base.Initialize();
-            Debug.Log("Initialize");
 
-            _trackedObject = GetComponent<SteamVR_TrackedObject>();
 
-            if(_trackedObject != null) {
+            if(Hand != null) {
                 _connected = true;
             }
         }
@@ -27,13 +26,7 @@ namespace Wacki {
             if(!_connected)
                 return false;
             
-            var device = SteamVR_Controller.Input(controllerIndex);
-            if(device != null) {
-                var result = device.GetPressDown(button);
-                return result;
-            }
-
-            return false;
+            return ButtonPressState.GetStateDown(Hand);
         }
 
         public override bool ButtonUp()
@@ -41,36 +34,32 @@ namespace Wacki {
             if(!_connected)
                 return false;
 
-            var device = SteamVR_Controller.Input(controllerIndex);
-            if(device != null)
-                return device.GetPressUp(button);
-
-            return false;
+            return ButtonPressState.GetStateUp(Hand);
         }
         
         public override void OnEnterControl(GameObject control)
         {
             if (!_connected)
                 return;
-            var device = SteamVR_Controller.Input(controllerIndex);
-            device.TriggerHapticPulse(1000);
+            
+            if(Haptics)
+	        	TriggerHapticPulse(1000, Hand);
         }
 
         public override void OnExitControl(GameObject control)
         {
             if (!_connected)
                 return;
-            var device = SteamVR_Controller.Input(controllerIndex);
-            device.TriggerHapticPulse(600);
+            
+            if(Haptics)
+	        	TriggerHapticPulse(600, Hand);
         }
 
-        int controllerIndex
-        {
-            get {
-                if (!_connected) return 0;
-                return (int)(_trackedObject.index);
-            }
-        }
+        public void TriggerHapticPulse(ushort microSecondsDuration, SteamVR_Input_Sources hand)
+		{
+			float seconds = (float)microSecondsDuration / 1000000f;
+			HapticAction.Execute(0, seconds, 1f / seconds, 1, hand);
+		}
     }
 
 }
